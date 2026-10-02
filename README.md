@@ -1,13 +1,7 @@
 # claude-usage-widget
 
-Tiny always-on-top Tkinter widget that shows your Claude Code Max plan
-utilization for the rolling **5-hour** and **7-day** windows.
-
-It reads the OAuth token from `~/.claude/.credentials.json` (the same file
-Claude Code writes) and polls the internal usage endpoint used by
-`/usage`, refreshing every 2 minutes.
-
-## Screenshot
+Widget de escritorio, siempre visible, que muestra cuánto llevás usado del plan Max de
+Claude Code en las ventanas de **5 horas** y de **7 días**.
 
 ```
 ┌──────────────┐
@@ -16,32 +10,23 @@ Claude Code writes) and polls the internal usage endpoint used by
 └──────────────┘
 ```
 
-Colors: green `< 60%`, yellow `< 85%`, red otherwise.
+Verde por debajo del 60 %, amarillo hasta el 85 % y rojo después. Se actualiza cada 2 minutos.
 
-## Requirements
+## Uso
 
-- Python 3 with Tkinter (`sudo apt install python3-tk` on Debian/Ubuntu)
-- An active Claude Code session (so `~/.claude/.credentials.json` exists)
-
-## Usage
+Necesita Python 3 con Tkinter (`sudo apt install python3-tk` en Debian y Ubuntu) y una sesión
+de Claude Code iniciada, para que exista `~/.claude/.credentials.json`.
 
 ```bash
-# run in the foreground
-python3 widget.py
-
-# or run detached, logs to /tmp/claude-usage-widget.log
-./run.sh
+python3 widget.py   # en primer plano
+./run.sh            # en segundo plano, con log en /tmp/claude-usage-widget.log
 ```
 
-### Controls
+Se mueve arrastrando con el click izquierdo y se cierra con doble click o click derecho. Para
+frenar la instancia de fondo: `pkill -f 'python3 widget.py'`.
 
-- **Left-click + drag** — move the widget
-- **Double-click** or **right-click** — close it
-- **Stop background instance** — `pkill -f 'python3 widget.py'`
+## Cómo funciona
 
-## Notes
-
-The widget calls `https://api.anthropic.com/api/oauth/usage` with the
-`oauth-2025-04-20` beta header — the same request Claude Code makes for
-`/usage`. If the endpoint changes upstream, the widget will show `err<code>`
-or `offline` until updated.
+Lee el token OAuth del archivo de credenciales de Claude Code y consulta el mismo endpoint
+interno que usa `/usage` (`api.anthropic.com/api/oauth/usage`). Como no es una API pública,
+si cambia, el widget muestra `err<código>` u `offline` hasta que se actualice.
